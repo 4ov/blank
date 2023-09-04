@@ -19,13 +19,13 @@ export function createYoutubeMemo() {
 
 export function createDrawingMemo(memo: DrawMemo) {
     const container = document.createElement("div");
-    container.classList.add("input");
+    container.classList.add("input", "drawing");
     container.style.display = "flex";
     container.style.flexDirection = "column";
 
     const controls = document.createElement("div");
-    controls.style.display = "flex"
-    controls.style.gap = "8px"
+    controls.style.display = "flex";
+    controls.style.gap = "8px";
     controls.style.padding = "8px";
     controls.style.borderBottom = "1px solid var(--foreground)";
 
@@ -33,21 +33,21 @@ export function createDrawingMemo(memo: DrawMemo) {
     undo.innerHTML = "<-";
     undo.addEventListener("click", () => {
         d.undo();
-        save()
+        save();
     });
 
     const redo = document.createElement("button");
     redo.innerHTML = "->";
     redo.addEventListener("click", () => {
         d.redo();
-        save()
+        save();
     });
 
     const clear = document.createElement("button");
     clear.innerHTML = "clear";
     clear.addEventListener("click", () => {
         d.clear();
-        save()
+        save();
     });
 
     // const
@@ -69,7 +69,7 @@ export function createDrawingMemo(memo: DrawMemo) {
         },
     });
 
-    let timer;
+    let timer: number;
 
     function save() {
         clearTimeout(timer);
@@ -92,9 +92,9 @@ export function createDrawingMemo(memo: DrawMemo) {
 
 export function createTextMemo({ text, key }: TextMemo) {
     const textarea = document.createElement("textarea");
-    textarea.dir = "auto"
+    textarea.dir = "auto";
     textarea.classList.add("input");
-    textarea.style.width = "calc(100% - 4px)"
+    textarea.style.width = "calc(100% - 4px)";
     textarea.setAttribute("placeholder", "Add a short memo...");
     textarea.setAttribute("autocomplete", "true");
 

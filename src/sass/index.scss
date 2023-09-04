@@ -1,5 +1,5 @@
 @use "reset";
-@import "https://unpkg.com/open-props";
+@import "./open-props.css";
 
 :root {
     --foreground: black;
@@ -192,7 +192,7 @@ body {
     color: var(--foreground);
     border: 1px solid var(--foreground);
     width: fit-content;
-    padding: 0.5rem 1.75rem;
+    // padding: 0.5rem 1.75rem;
 
 }
 

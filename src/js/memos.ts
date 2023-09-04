@@ -2,6 +2,15 @@ import { createDrauu } from "drauu";
 import { DrawMemo, Memo, STATIC_INDEX, TextMemo } from "./globals";
 import { decreaseAllMemoIndexes, updateMemo } from "./utils";
 
+
+
+//@ts-ignore
+import undoIcon from '../assets/icons/undo.svg'
+//@ts-ignore
+import redoIcon from '../assets/icons/redo.svg'
+
+
+
 export function createYoutubeMemo() {
     const container = document.createElement("div");
     container.addEventListener("pointerdown", (ev) => {
@@ -30,20 +39,23 @@ export function createDrawingMemo(memo: DrawMemo) {
     controls.style.borderBottom = "1px solid var(--foreground)";
 
     const undo = document.createElement("button");
-    undo.innerHTML = "<-";
+    undo.classList.add("btn");
+    undo.innerHTML = `<img src="${undoIcon}" width=24 />`;
     undo.addEventListener("click", () => {
         d.undo();
         save();
     });
 
     const redo = document.createElement("button");
-    redo.innerHTML = "->";
+    redo.classList.add("btn");
+    redo.innerHTML = `<img src="${redoIcon}" width=24 />`;
     redo.addEventListener("click", () => {
         d.redo();
         save();
     });
 
     const clear = document.createElement("button");
+    clear.classList.add("btn");
     clear.innerHTML = "clear";
     clear.addEventListener("click", () => {
         d.clear();
@@ -69,7 +81,7 @@ export function createDrawingMemo(memo: DrawMemo) {
         },
     });
 
-    let timer: number;
+    let timer: any;
 
     function save() {
         clearTimeout(timer);

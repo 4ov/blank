@@ -91,13 +91,13 @@ body {
                     border-bottom: 1px solid var(--foreground);
                 }
 
-                textarea.input {
+                .input {
                     position: absolute;
                     top: 17px;
                     left: 0px;
-                    width: calc(100% - 32px);
+                    width: calc(100% - 0px);
                     height: calc(100% - 49px);
-                    padding: 16px;
+                    // padding: 0 3px;
                     margin: 0;
                     border: 0;
                     outline: 0;
@@ -150,4 +150,15 @@ body {
             }
         }
     }
+}
+
+
+
+#loading{
+    position: fixed;
+    top: 3%;
+    right: 3%;
+    pointer-events: none;
+    opacity: 0.8;
+    z-index: 99e9;
 }

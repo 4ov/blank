@@ -8,7 +8,10 @@
   "license": "GPL 2.0",
   "private": true,
   "dependencies": {
-    "deta": "2.0.0"
+    "@justinribeiro/lite-youtube": "^1.5.0",
+    "deta": "2.0.0",
+    "drauu": "^0.3.5",
+    "nanostores": "^0.9.3"
   },
   "scripts": {
     "dev": "parcel ./src/index.html --port $PORT --no-cache",
@@ -20,6 +23,7 @@
     "@babel/preset-env": "^7.22.14",
     "babel-preset-minify": "^0.5.2",
     "parcel-bundler": "^1.12.4",
-    "sass": "^1.66.1"
+    "sass": "^1.66.1",
+    "typescript": "^5.2.2"
   }
 }

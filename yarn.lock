@@ -967,6 +967,11 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
+"@drauu/core@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@drauu/core/-/core-0.3.5.tgz#9a9aaad4e22e25ed90111b683ce3c1d0df62f16b"
+  integrity sha512-jljs4zEjiPqoqacpfxd2fCDAs5Z7ZOGWpjj3i8HZlvA+wMgAihqDySxO9PIWpTZcpDJio2Pk1GnwcPAV6NPlkQ==
+
 "@iarna/toml@^2.2.0":
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
@@ -1011,6 +1016,11 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
+
+"@justinribeiro/lite-youtube@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@justinribeiro/lite-youtube/-/lite-youtube-1.5.0.tgz#c8f5b1e9bc6980defb725bf84d84a957deea1b92"
+  integrity sha512-TU92RKtz9BI9PRYrVwDIUsnFadLZtqRKWl1ZOdbxb7roJDb8Dd/xURllAsLEmCg6oJNyhXlVa5RsnUc0EKd8Cw==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -2510,6 +2520,13 @@ dotenv@^5.0.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-5.0.1.tgz#a5317459bd3d79ab88cff6e44057a6a3fbb1fcef"
   integrity sha512-4As8uPrjfwb7VXC+WnLCbXK7y+Ueb2B3zgNCePYfhxS1PYeaO1YTeplffTEcbfLhvFNGLAz90VvJs9yomG7bow==
 
+drauu@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/drauu/-/drauu-0.3.5.tgz#a3aa8c677e95f531a8e27e89d6f9fcc0e583672f"
+  integrity sha512-smn9WrphMEz/umneTqeyxBEYH8WotkDFX658717HCcax4TWFDsfkvktdfH6aXXy1BP2WXbVc5msHPEzkYFHBFw==
+  dependencies:
+    "@drauu/core" "0.3.5"
+
 duplexer2@~0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/duplexer2/-/duplexer2-0.1.4.tgz#8b12dab878c0d69e3e7891051662a32fc6bddcc1"
@@ -3972,6 +3989,11 @@ nanomatch@^1.2.9:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+nanostores@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/nanostores/-/nanostores-0.9.3.tgz#a095de5cb695e027b84657d5e31cabd6c5bb269c"
+  integrity sha512-KobZjcVyNndNrb5DAjfs0WG0lRcZu5Q1BOrfTOxokFLi25zFrWPjg+joXC6kuDqNfSt9fQwppyjUBkRPtsL+8w==
 
 nice-try@^1.0.4:
   version "1.0.5"
@@ -5725,6 +5747,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
+
+typescript@^5.2.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.2.2.tgz#5ebb5e5a5b75f085f22bc3f8460fba308310fa78"
+  integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"

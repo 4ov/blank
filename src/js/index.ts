@@ -38,7 +38,7 @@ import "../sass/index.scss";
 
 let theme = "light";
 
-let main, canvas, board, selection;
+let main: HTMLElement, canvas: HTMLCanvasElement, board: HTMLElement, selection: HTMLElement;
 let currentMouse, currentSize;
 
 //? SETUP
@@ -670,15 +670,16 @@ function onResize() {
     const width = window.innerWidth - MARGIN - 1;
     const height = window.innerHeight - MARGIN + 1;
 
-    canvas.setAttribute("width", width);
-    canvas.setAttribute("height", height);
+    canvas.setAttribute("width", width.toString());
+    canvas.setAttribute("height", height.toString());
 
     canvas.style.top = `${MARGIN / 2}px`;
     canvas.style.left = `${MARGIN / 2}px`;
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
 
-    const context = canvas.getContext("2d");
+    const context = canvas.getContext("2d")!;
+
 
     for (let x = 0; x <= width; x += GRID_SIZE) {
         for (let y = 0; y <= height; y += GRID_SIZE) {
@@ -716,11 +717,11 @@ async function onLoad() {
 
     board.addEventListener("mousedown", onMouseDown, {
         passive: false,
-        useCapture: false,
+        capture: false,
     });
     board.addEventListener("touchstart", onMouseDown, {
         passive: false,
-        useCapture: false,
+        capture: false,
     });
 
     main.appendChild(canvas);

@@ -1,16 +1,20 @@
 import { atom } from "nanostores";
+import mitt from "mitt";
 export const MARGIN = 48;
 export const GRID_SIZE = 10;
 
 export const DRAG_INDEX = "99999";
 export const STATIC_INDEX = "99998";
 
-export let activeMemo = atom<null | HTMLDivElement>(null);
-export let loading = atom<boolean>(false)
+export const activeMemo = atom<null | HTMLDivElement>(null);
+export const loading = atom<boolean>(false);
+export const bus = mitt<{
+    [K: `update:${string}`]: Memo;
+}>();
 
 export const TYPE_CHOOSER_SELECTOR = "#newTypeChooser";
 
-export const MemoTypes = ["img", "text",  "drawing"] as const;
+export const MemoTypes = ["img", "text", "drawing"] as const;
 
 export interface BaseMemo {
     // type: (typeof MemoTypes)[number];
@@ -30,22 +34,17 @@ export interface DrawMemo extends BaseMemo {
     svg: string;
 }
 
-
-export interface TextMemo extends BaseMemo{
-  type: "text"
-  text: string | null
+export interface TextMemo extends BaseMemo {
+    type: "text";
+    text: string | null;
 }
 
+export interface ImgMemo extends BaseMemo {
+    type: "img";
+    filepath: string | null;
+}
 
-export interface ImgMemo extends BaseMemo{
-    type: "img"
-    filepath: string | null
-  }
-  
-
-
-export type Memo = DrawMemo | TextMemo | ImgMemo
-
+export type Memo = DrawMemo | TextMemo | ImgMemo;
 
 export const DEFAULT_MEMO: Memo = {
     type: "text",

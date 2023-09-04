@@ -11,6 +11,7 @@
     "@justinribeiro/lite-youtube": "^1.5.0",
     "deta": "2.0.0",
     "drauu": "^0.3.5",
+    "mitt": "^3.0.1",
     "nanostores": "^0.9.3"
   },
   "scripts": {

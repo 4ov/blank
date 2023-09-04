@@ -1,6 +1,13 @@
 import { ObjectType } from "deta/dist/types/types/basic";
-import { GRID_SIZE, Memo, MemoTypes, loading } from "./globals";
+import { GRID_SIZE, Memo, MemoTypes, bus, loading } from "./globals";
 import { Base, Drive } from "deta";
+
+
+
+function applyOps(oldValue, newValue){
+    
+}
+
 
 export function chooseType(): Promise<(typeof MemoTypes)[number]> {
     const dialog = document.querySelector<HTMLDialogElement>("#newTypeChooser");
@@ -24,6 +31,9 @@ export interface Bounds {
 const memodb = Base("memos");
 const confdb = Base("config");
 const filesdrive = Drive("files");
+
+
+
 
 export function confirm(text) {
     return window.confirm(text);
@@ -71,9 +81,11 @@ export async function createMemo(item: Memo) {
 }
 
 export async function updateMemo(id, item) {
+    
     try {
         loading.set(true);
-        await memodb.update(item, id);
+        await memodb.update(item, id);        
+        // bus.emit(`update:id`, )
     } finally {
         loading.set(false);
     }

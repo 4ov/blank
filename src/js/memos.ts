@@ -1,6 +1,18 @@
 import { createDrauu } from "drauu";
-import { DrawMemo, ImgMemo, Memo, STATIC_INDEX, TextMemo } from "./globals";
-import { decreaseAllMemoIndexes, downloadFile, updateMemo, uploadFile } from "./utils";
+import {
+    DrawMemo,
+    ImgMemo,
+    Memo,
+    STATIC_INDEX,
+    TextMemo,
+    bus,
+} from "./globals";
+import {
+    decreaseAllMemoIndexes,
+    downloadFile,
+    updateMemo,
+    uploadFile,
+} from "./utils";
 
 //@ts-ignore
 import undoIcon from "../assets/icons/undo.svg";
@@ -141,7 +153,7 @@ export function createTextMemo({ text, key }: TextMemo) {
 }
 
 export function createImgMemo(memo: ImgMemo) {
-    const { filepath, key } = memo
+    const { filepath, key } = memo;
     const container = document.createElement("div");
     container.classList.add("input", "drawing");
     container.style.display = "flex";
@@ -152,7 +164,7 @@ export function createImgMemo(memo: ImgMemo) {
 
         //! this is weired
         console.log(ev.dataTransfer?.items);
-        
+
         if (!ev.dataTransfer?.items || ev.dataTransfer.items.length < 1) {
             throw new Error("no items");
         }
@@ -160,10 +172,13 @@ export function createImgMemo(memo: ImgMemo) {
         const file = items[0].getAsFile();
         if (!file) throw new Error("cannot get drop as file");
         const mime = file.type || "image/jpeg";
-        if(!mime.startsWith("image/"))throw new Error("only images allowed")
-        const result = await uploadFile(file)
-        await updateMemo(key, { filepath: result })
+        if (!mime.startsWith("image/")) throw new Error("only images allowed");
+        const result = await uploadFile(file);
+        await updateMemo(key, { filepath: result });
+    });
 
+    bus.on(`update:${key}`, (memo) => {
+        console.log(memo);
     });
 
     container.addEventListener("dragover", (ev) => {
@@ -178,26 +193,23 @@ export function createImgMemo(memo: ImgMemo) {
 
     // container.append(lg);
 
-    if(filepath){
-        downloadFile(filepath).then(async blob=>{
-            if(!blob){
+    if (filepath) {
+        downloadFile(filepath).then(async (blob) => {
+            if (!blob) {
                 await updateMemo(key, {
-                    filepath: null
-                })
-                return
+                    filepath: null,
+                });
+                return;
             }
-            const url = URL.createObjectURL(blob)
-            const img = document.createElement("img")
-            img.src = url
+            const url = URL.createObjectURL(blob);
+            const img = document.createElement("img");
+            img.src = url;
             // img.style.width = "100%"
-            img.style.height = "100%"
-            img.style.objectFit = "contain"
-            container.append(img)
-            
-        })
-        
+            img.style.height = "100%";
+            img.style.objectFit = "contain";
+            container.append(img);
+        });
     }
 
-    end:
-    return container;
+    end: return container;
 }

@@ -23,7 +23,6 @@ export interface BaseMemo {
         width: number;
         height: number;
     };
-    default: boolean;
 }
 
 export interface DrawMemo extends BaseMemo {
@@ -55,5 +54,4 @@ export const DEFAULT_MEMO: Memo = {
         width: 379,
         height: 309,
     },
-    default: true,
 };

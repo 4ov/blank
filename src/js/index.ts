@@ -75,7 +75,7 @@ function onMouseDown(e) {
 */
 // storage
 function newMemo(data: Memo & { type: string }) {
-    let { type, key: id, position, default: defaultMemo, size } = data;
+    let { type, key: id, position, size } = data;
     type ||= "text";
     const memo = document.createElement("div");
     memo.addEventListener("pointerdown", (ev) => {
@@ -118,6 +118,8 @@ function newMemo(data: Memo & { type: string }) {
     close.addEventListener("mouseup", handleDeleteMemo);
     close.addEventListener("touchend", handleDeleteMemo);
     memo.appendChild(close);
+
+    
 
     const resize = document.createElement("div");
     resize.classList.add("resize");
@@ -570,7 +572,6 @@ async function handleBoardDragEnd(e: Event) {
         await createMemo({
             type,
             key: id,
-            default: false,
             position: { top, left },
             size: { width, height },
         } as Memo & { type: string });

@@ -10,7 +10,7 @@ export let loading = atom<boolean>(false)
 
 export const TYPE_CHOOSER_SELECTOR = "#newTypeChooser";
 
-export const MemoTypes = ["text",  "drawing"] as const;
+export const MemoTypes = ["img", "text",  "drawing"] as const;
 
 export interface BaseMemo {
     // type: (typeof MemoTypes)[number];
@@ -37,9 +37,14 @@ export interface TextMemo extends BaseMemo{
 }
 
 
+export interface ImgMemo extends BaseMemo{
+    type: "img"
+    filepath: string | null
+  }
+  
 
 
-export type Memo = DrawMemo | TextMemo
+export type Memo = DrawMemo | TextMemo | ImgMemo
 
 
 export const DEFAULT_MEMO: Memo = {

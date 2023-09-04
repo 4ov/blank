@@ -5,12 +5,13 @@ import {
     STATIC_INDEX,
     DEFAULT_MEMO,
     Memo,
-    MemoTypes,
     TYPE_CHOOSER_SELECTOR,
     activeMemo,
     TextMemo,
     DrawMemo,
     loading,
+    ImgMemo,
+    MemoTypes,
 } from "./globals";
 import {
     snapToGrid,
@@ -26,7 +27,12 @@ import {
     setConf,
     chooseType,
 } from "./utils";
-import { createDrawingMemo, createTextMemo, createYoutubeMemo } from "./memos";
+import {
+    createDrawingMemo,
+    createImgMemo,
+    createTextMemo,
+    createYoutubeMemo,
+} from "./memos";
 
 import "../sass/index.scss";
 
@@ -74,7 +80,7 @@ function onMouseDown(e) {
   Memo Functions and Handlers
 */
 // storage
-function newMemo(data: Memo & { type: string }) {
+function newMemo(data: Memo) {
     let { type, key: id, position, size } = data;
     type ||= "text";
     const memo = document.createElement("div");
@@ -84,6 +90,7 @@ function newMemo(data: Memo & { type: string }) {
     });
     memo.dataset.default = "true";
 
+    type;
     memo.setAttribute("data-id", id);
     memo.classList.add("memo");
     memo.style.top = `${position.top}px`;
@@ -91,17 +98,17 @@ function newMemo(data: Memo & { type: string }) {
     memo.style.width = `${size.width}px`;
     memo.style.height = `${size.height}px`;
     memo.style.zIndex = STATIC_INDEX;
-
-    switch (type) {
+    switch (data.type) {
+        case "img":
+            memo.appendChild(createImgMemo(data as ImgMemo));
+            break;
         case "text":
             memo.appendChild(createTextMemo(data as TextMemo));
             break;
-        // case "youtube":
-        //     memo.appendChild(createYoutubeMemo());
-        //     break;
         case "drawing":
             memo.appendChild(createDrawingMemo(data as DrawMemo));
             break;
+
         default:
             console.log(data);
     }
@@ -118,8 +125,6 @@ function newMemo(data: Memo & { type: string }) {
     close.addEventListener("mouseup", handleDeleteMemo);
     close.addEventListener("touchend", handleDeleteMemo);
     memo.appendChild(close);
-
-    
 
     const resize = document.createElement("div");
     resize.classList.add("resize");

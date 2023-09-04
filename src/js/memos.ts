@@ -1,15 +1,11 @@
 import { createDrauu } from "drauu";
-import { DrawMemo, Memo, STATIC_INDEX, TextMemo } from "./globals";
-import { decreaseAllMemoIndexes, updateMemo } from "./utils";
-
-
+import { DrawMemo, ImgMemo, Memo, STATIC_INDEX, TextMemo } from "./globals";
+import { decreaseAllMemoIndexes, downloadFile, updateMemo, uploadFile } from "./utils";
 
 //@ts-ignore
-import undoIcon from '../assets/icons/undo.svg'
+import undoIcon from "../assets/icons/undo.svg";
 //@ts-ignore
-import redoIcon from '../assets/icons/redo.svg'
-
-
+import redoIcon from "../assets/icons/redo.svg";
 
 export function createYoutubeMemo() {
     const container = document.createElement("div");
@@ -142,4 +138,66 @@ export function createTextMemo({ text, key }: TextMemo) {
     );
 
     return textarea;
+}
+
+export function createImgMemo(memo: ImgMemo) {
+    const { filepath, key } = memo
+    const container = document.createElement("div");
+    container.classList.add("input", "drawing");
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+
+    container.addEventListener("drop", async (ev) => {
+        ev.preventDefault();
+
+        //! this is weired
+        console.log(ev.dataTransfer?.items);
+        
+        if (!ev.dataTransfer?.items || ev.dataTransfer.items.length < 1) {
+            throw new Error("no items");
+        }
+        const items = ev.dataTransfer.items;
+        const file = items[0].getAsFile();
+        if (!file) throw new Error("cannot get drop as file");
+        const mime = file.type || "image/jpeg";
+        if(!mime.startsWith("image/"))throw new Error("only images allowed")
+        const result = await uploadFile(file)
+        await updateMemo(key, { filepath: result })
+
+    });
+
+    container.addEventListener("dragover", (ev) => {
+        ev.preventDefault();
+    });
+
+    // const lg = document.createElement("div");
+    // Object.assign(lg.style, {
+    //     display: "flex",
+    //     background: "red",
+    // } as { [K in keyof HTMLElement["style"]]: HTMLElement["style"][K] });
+
+    // container.append(lg);
+
+    if(filepath){
+        downloadFile(filepath).then(async blob=>{
+            if(!blob){
+                await updateMemo(key, {
+                    filepath: null
+                })
+                return
+            }
+            const url = URL.createObjectURL(blob)
+            const img = document.createElement("img")
+            img.src = url
+            // img.style.width = "100%"
+            img.style.height = "100%"
+            img.style.objectFit = "contain"
+            container.append(img)
+            
+        })
+        
+    }
+
+    end:
+    return container;
 }

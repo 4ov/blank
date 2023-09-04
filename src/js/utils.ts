@@ -1,6 +1,6 @@
 import { ObjectType } from "deta/dist/types/types/basic";
 import { GRID_SIZE, Memo, MemoTypes, loading } from "./globals";
-import { Base } from "deta";
+import { Base, Drive } from "deta";
 
 export function chooseType(): Promise<(typeof MemoTypes)[number]> {
     const dialog = document.querySelector<HTMLDialogElement>("#newTypeChooser");
@@ -23,9 +23,33 @@ export interface Bounds {
 
 const memodb = Base("memos");
 const confdb = Base("config");
+const filesdrive = Drive("files");
 
 export function confirm(text) {
     return window.confirm(text);
+}
+
+export async function uploadFile(file: File) {
+    try {
+        loading.set(true);
+        const fileId = generateUUID();
+        await filesdrive.put(fileId, {
+            data: new Uint8Array(await file.arrayBuffer()),
+        });
+        return fileId;
+    } finally {
+        loading.set(false);
+    }
+}
+
+export async function downloadFile(id: string) {
+    try{
+        loading.set(true)
+        return filesdrive.get(id);
+    }finally{
+        loading.set(false)
+
+    }
 }
 
 export async function getConf(key) {
@@ -65,12 +89,11 @@ export async function fetchMemos() {
 }
 
 export async function deleteMemo(id) {
-    try{
-      loading.set(true);
-      await memodb.delete(id);
-    }finally{
-      loading.set(false);
-
+    try {
+        loading.set(true);
+        await memodb.delete(id);
+    } finally {
+        loading.set(false);
     }
 }
 

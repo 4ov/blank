@@ -191,6 +191,8 @@ function handleMemoDragStart(e) {
 
 function handleMemoDragMove(e) {
     //TODO: check if activeMemo available
+    const memo = activeMemo.get();
+    if (!memo) throw new Error("no active memo");
     const isActive = activeMemo.get()?.classList.contains("active");
 
     if (isActive) {
@@ -203,12 +205,10 @@ function handleMemoDragMove(e) {
                 ? snapToGrid(e.touches[0].clientY, GRID_SIZE)
                 : snapToGrid(e.clientY, GRID_SIZE);
 
-        activeMemo.get()!.style.top = `${
+        memo.style.top = `${
             activeMemo.get()!.offsetTop - (currentMouse.y - y)
         }px`;
-        activeMemo.get()!.style.left = `${
-            activeMemo.get()!.offsetLeft - (currentMouse.x - x)
-        }px`;
+        memo.style.left = `${memo.offsetLeft - (currentMouse.x - x)}px`;
 
         currentMouse = { x, y };
     }
@@ -216,9 +216,11 @@ function handleMemoDragMove(e) {
 
 // storage
 function handleMemoDragEnd(e) {
+    const memo = activeMemo.get();
+    if (!memo) throw new Error("no active memo");
     const bounds = checkBounds(
         board.getBoundingClientRect(),
-        activeMemo.get()!.getBoundingClientRect()
+        memo.getBoundingClientRect()
     );
 
     const x =
@@ -230,8 +232,8 @@ function handleMemoDragEnd(e) {
             ? snapToGrid(e.touches[0].clientY, GRID_SIZE)
             : snapToGrid(e.clientY, GRID_SIZE);
 
-    let top = activeMemo.get()!.offsetTop - (currentMouse.y - y);
-    let left = activeMemo.get()!.offsetLeft - (currentMouse.x - x);
+    let top = memo.offsetTop - (currentMouse.y - y);
+    let left = memo.offsetLeft - (currentMouse.x - x);
 
     if (bounds) {
         if (bounds.edge === "top") {
@@ -245,20 +247,20 @@ function handleMemoDragEnd(e) {
         }
     }
 
-    activeMemo.get()!.style.top = `${top}px`;
-    activeMemo.get()!.style.left = `${left}px`;
-    activeMemo.get()!.classList.remove("active");
+    memo.style.top = `${top}px`;
+    memo.style.left = `${left}px`;
+    memo.classList.remove("active");
 
-    const drag = activeMemo.get()!.querySelectorAll(".drag")[0] as HTMLElement;
+    const drag = memo.querySelectorAll(".drag")[0] as HTMLElement;
     drag.style.cursor = "grab";
     drag.style.backgroundColor = "transparent";
 
-    const input = activeMemo.get()!.querySelector(".input") as HTMLElement;
+    const input = memo.querySelector(".input") as HTMLElement;
     console.log(input);
 
     input.focus();
 
-    const id = activeMemo.get()!.dataset.id;
+    const id = memo.dataset.id;
     updateMemo(id, { position: { top, left } });
 
     document.body.style.cursor = "initial";
@@ -305,7 +307,7 @@ function handleMemoResizeStart(e) {
                 ? snapToGrid(e.touches[0].clientY, GRID_SIZE)
                 : snapToGrid(e.clientY, GRID_SIZE);
 
-        const rect = activeMemo.get()!.getBoundingClientRect();
+        const rect = memo.getBoundingClientRect();
         const width = parseInt(rect.width.toString(), 10);
         const height = parseInt(rect.height.toString(), 10);
 
@@ -347,7 +349,9 @@ function handleMemoResizeStart(e) {
 }
 
 function handleMemoResizeMove(e) {
-    const isActive = activeMemo.get()!.classList.contains("active");
+    const memo = activeMemo.get();
+    if (!memo) throw new Error("no active memo");
+    const isActive = memo.classList.contains("active");
 
     if (isActive) {
         const x =
@@ -362,9 +366,8 @@ function handleMemoResizeMove(e) {
         const width = currentSize.width + (x - currentMouse.x) - 2;
         const height = currentSize.height + (y - currentMouse.y) - 2;
 
-        const active = activeMemo.get()!;
-        active.style.width = `${width}px`;
-        active.style.height = `${height}px`;
+        memo.style.width = `${width}px`;
+        memo.style.height = `${height}px`;
     }
 }
 
@@ -382,18 +385,18 @@ function handleMemoResizeEnd(e) {
     const width = currentSize.width + (x - currentMouse.x) - 2;
     const height = currentSize.height + (y - currentMouse.y) - 2;
 
-    const active = activeMemo.get()!;
-    active.style.width = `${width}px`;
-    active.style.height = `${height}px`;
+    const memo = activeMemo.get()!;
+    memo.style.width = `${width}px`;
+    memo.style.height = `${height}px`;
 
     const bounds = checkBounds(
         board.getBoundingClientRect(),
-        active.getBoundingClientRect()
+        memo.getBoundingClientRect()
     );
 
     if (bounds) {
-        let top = active.offsetTop;
-        let left = active.offsetLeft;
+        let top = memo.offsetTop;
+        let left = memo.offsetLeft;
 
         if (bounds.edge === "top") {
             top = bounds.offset;
@@ -405,20 +408,20 @@ function handleMemoResizeEnd(e) {
             left = bounds.offset;
         }
 
-        active.style.top = `${top}px`;
-        active.style.left = `${left}px`;
+        memo.style.top = `${top}px`;
+        memo.style.left = `${left}px`;
     }
 
-    const resize = active.querySelectorAll(".resize")[0] as HTMLDivElement;
+    const resize = memo.querySelectorAll(".resize")[0] as HTMLDivElement;
     resize.style.cursor = "nw-resize";
     resize.style.backgroundColor = "transparent";
 
-    active.classList.remove("active");
+    memo.classList.remove("active");
 
-    const textarea = active.querySelector(".input") as HTMLElement;
+    const textarea = memo.querySelector(".input") as HTMLElement;
     textarea.focus();
 
-    const id = active.dataset.id;
+    const id = memo.dataset.id;
     updateMemo(id, { size: { width, height } });
 
     document.body.style.cursor = "initial";
@@ -718,13 +721,6 @@ async function onLoad() {
     main.appendChild(board);
     document.body.appendChild(main);
 
-    // document.body.addEventListener(
-    //     "touchmove",
-    //     function (event) {
-    //         event.preventDefault();
-    //     },
-    //     { passive: false, useCapture: false }
-    // );
     document.body.addEventListener("touchmove", (ev) => ev.preventDefault(), {
         passive: false,
         capture: false,
